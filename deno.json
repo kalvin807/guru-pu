@@ -1,18 +1,24 @@
 {
-  "lint": {
-    "rules": {
-      "tags": ["recommended"],
-      "include": ["ban-untagged-todo"],
-      "exclude": ["no-unused-vars"]
-    }
-  },
   "fmt": {
     "options": {
-      "useTabs": false,
-      "lineWidth": 120,
       "indentWidth": 2,
+      "lineWidth": 120,
+      "proseWrap": "preserve",
       "singleQuote": false,
-      "proseWrap": "preserve"
+      "useTabs": false
+    }
+  },
+  "lint": {
+    "rules": {
+      "exclude": [
+        "no-unused-vars"
+      ],
+      "include": [
+        "ban-untagged-todo"
+      ],
+      "tags": [
+        "recommended"
+      ]
     }
   }
 }
