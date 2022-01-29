@@ -15,17 +15,19 @@ import (
 
 // Variables used for command line parameters
 var (
-	Token string
+	Token    string
+	RedisURL string
 )
 
 func init() {
-	flag.StringVar(&Token, "t", "", "Bot Token")
+	flag.StringVar(&Token, "token", "", "Bot Token")
+	flag.StringVar(&RedisURL, "redis", "", "Redis URL")
 	flag.Parse()
 }
 
 func main() {
 	ctx := context.Background()
-	redisOption, err := redis.ParseURL("redis://default:bFijghCeZbxao7tS8Ugb@containers-us-west-12.railway.app:6976")
+	redisOption, err := redis.ParseURL(RedisURL)
 	if err != nil {
 		fmt.Println("error opening connection,", err)
 		panic(err)
