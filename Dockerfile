@@ -1,15 +1,30 @@
-FROM golang:1.17-alpine
+# syntax=docker/dockerfile:1
 
-WORKDIR app
+# Build
+FROM golang:1.17-alpine AS build
 
-COPY . .
+WORKDIR /app
 
-RUN "go build -o ./bin/main ."
+COPY go.mod ./
+COPY go.sum ./
+RUN go mod download
+
+COPY . ./
+
+RUN go build -o /gurupu
+
+
+# Deploy
+FROM alpine:latest
+
+WORKDIR /
+
+COPY --from=build /gurupu /gurupu
 
 ARG DISCORD_BOT_TOKEN
 ARG REDIS_URL
 
-ENV DISCORD_BOT_TOKEN ${DISCORD_BOT_TOKEN}
-ENV REDIS_URL ${REDIS_URL}
+ENV DISCORD_BOT_TOKEN=$DISCORD_BOT_TOKEN
+ENV REDIS_URL=$REDIS_URL
 
-CMD ["./bin/main", "-token", ${DISCORD_BOT_TOKEN}, "-redis", ${REDIS_URL}]
+CMD /gurupu -token ${DISCORD_BOT_TOKEN} -redis ${REDIS_URL}
